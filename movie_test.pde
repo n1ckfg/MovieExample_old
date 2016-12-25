@@ -11,6 +11,6 @@ void setup() {
 
 void draw() {
   drawMovie();
-  img = movie.get(100, 100, 100, 100);
+  img = frame.get(180, 50, 100, 100);
   image(img, width/2, height/2);
 }
