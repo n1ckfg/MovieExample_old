@@ -2,7 +2,8 @@ PImage img;
 
 void setup() {
   size(50, 50, P2D);
-  setupMovie("cat.mp4");
+  setupMoviePlayer("cat.mp4");
+  moviePlayer[0].resizeStage = true;
   img = createImage(100, 100, RGB);
   background(0);
 }
@@ -10,7 +11,7 @@ void setup() {
 
 
 void draw() {
-  drawMovie();
-  img = frame.get(180, 50, 100, 100);
+  drawMoviePlayer();
+  img = moviePlayer[0].frame.get(180, 50, 100, 100);
   image(img, width/2, height/2);
 }
