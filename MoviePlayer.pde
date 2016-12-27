@@ -36,6 +36,24 @@ class MoviePlayer {
     frame = createImage(movie.width, movie.height, RGB);
   }
   
+  void frameForward() {
+    movie.pause();
+    movie.jump(movie.time() + (1.0/movie.frameRate));
+    refreshFrame();
+  }
+  
+  void frameBack() {
+    movie.pause();
+    movie.jump(movie.time() - (1.0/movie.frameRate));
+    refreshFrame();
+  }
+  
+  void refreshFrame() {
+    movie.read();
+    if (lowerRight.x == 0 && lowerRight.y == 0) lowerRight = new PVector(movie.width, movie.height);
+    frame = movie.get((int) upperLeft.x, (int) upperLeft.y, (int) lowerRight.x, (int) lowerRight.y); 
+  }
+  
 }
 
 void setupMoviePlayer(String fileName) {
@@ -71,17 +89,15 @@ void drawMoviePlayer() {
 }
 
 void movieEvent(Movie m) {
+  m.read();
   for (int i=0; i<moviePlayer.length; i++) {
-    if (m == moviePlayer[i].movie) { // modify for multiple movies
-      moviePlayer[i].movie.read();
-      if (moviePlayer[i].movie.available()) {
-        if (moviePlayer[i].firstRun) {
-          moviePlayer[i].ready = true;
-          moviePlayer[i].firstRun = false;
-        }
-        if (moviePlayer[i].lowerRight.x == 0 && moviePlayer[i].lowerRight.y == 0) moviePlayer[i].lowerRight = new PVector(m.width, m.height);
-        moviePlayer[i].frame = moviePlayer[i].movie.get((int) moviePlayer[i].upperLeft.x, (int) moviePlayer[i].upperLeft.y, (int) moviePlayer[i].lowerRight.x, (int) moviePlayer[i].lowerRight.y); 
-      } 
-    }
+    if (moviePlayer[i].movie.available()) {
+      if (moviePlayer[i].firstRun) {
+        moviePlayer[i].ready = true;
+        moviePlayer[i].firstRun = false;
+      }
+      if (moviePlayer[i].lowerRight.x == 0 && moviePlayer[i].lowerRight.y == 0) moviePlayer[i].lowerRight = new PVector(moviePlayer[i].movie.width, moviePlayer[i].movie.height);
+      moviePlayer[i].frame = moviePlayer[i].movie.get((int) moviePlayer[i].upperLeft.x, (int) moviePlayer[i].upperLeft.y, (int) moviePlayer[i].lowerRight.x, (int) moviePlayer[i].lowerRight.y); 
+    } 
   }
 }
